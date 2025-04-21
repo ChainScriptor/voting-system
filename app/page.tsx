@@ -1,103 +1,207 @@
-import Image from "next/image";
+"use client";
+
+import { useUser } from "@clerk/nextjs";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  ArrowRight,
+  CheckCircle,
+  LineChart,
+  Vote,
+} from "lucide-react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const { user } = useUser();
+  const isAdmin = user?.publicMetadata?.isAdmin === true;
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="container mx-auto px-4">
+      {!user ? (
+        <div className="flex flex-col items-center justify-center min-h-[80vh] text-center">
+          <div className="space-y-4 max-w-3xl">
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+              <span className="block text-blue-600 transition-transform duration-300 hover:translate-y-[-2px]">Σύγχρονη Πλατφόρμα</span>
+              <span className="block transition-transform duration-300 hover:translate-y-[-2px]"> Ψηφοφορίας</span>
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-prose mx-auto p-6 rounded-2xl transition-all duration-300 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+              Μια ασφαλής, διαφανής και προσβάσιμη πλατφόρμα για τη διεξαγωγή
+              ψηφοφοριών. Συνδεθείτε ή εγγραφείτε για να συμμετάσχετε σε
+              διαθέσιμες ψηφοφορίες.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mt-20">
+            <Card className="transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl">
+              <CardHeader>
+                <Vote className="h-10 w-10 text-blue-600 mb-2 transition-transform duration-300 hover:scale-110" />
+                <CardTitle className="text-slate-900 dark:text-white">Εύκολη Ψηφοφορία</CardTitle>
+                <CardDescription>
+                  Απλή και διαισθητική διεπαφή για την υποβολή της ψήφου σας
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Συμμετέχετε σε ψηφοφορίες με λίγα κλικ.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl">
+              <CardHeader>
+                <CheckCircle className="h-10 w-10 text-purple-600 mb-2 transition-transform duration-300 hover:scale-110" />
+                <CardTitle className="text-slate-900 dark:text-white">Επιλέξιμες Ψηφοφορίες</CardTitle>
+                <CardDescription>
+                  Δείτε μόνο τις ψηφοφορίες που σας αφορούν
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Φιλτράρισμα ανάλογα με το προφίλ σας.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl">
+              <CardHeader>
+                <LineChart className="h-10 w-10 text-green-600 mb-2 transition-transform duration-300 hover:scale-110" />
+                <CardTitle className="text-slate-900 dark:text-white">Αποτελέσματα σε Πραγματικό Χρόνο</CardTitle>
+                <CardDescription>
+                  Παρακολουθήστε τα αποτελέσματα καθώς εξελίσσονται
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Με οπτικοποιήσεις και στατιστικά.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      ) : (
+        <div className="space-y-6 py-12">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold">Καλώς ήρθατε, {user.fullName}</h1>
+            <p className="text-muted-foreground">
+              Ο προσωπικός σας πίνακας ελέγχου ψηφοφοριών
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card className="transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl">
+              <CardHeader>
+                <CardTitle>Ενεργές Ψηφοφορίες</CardTitle>
+                <CardDescription>
+                  Ψηφοφορίες στις οποίες μπορείτε να ψηφίσετε
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="h-36 flex items-center justify-center">
+                <Link href="/elections" className="text-center">
+                  <Vote className="h-12 w-12 text-blue-600 mb-4 mx-auto" />
+                  <p className="text-sm text-muted-foreground">
+                    Δείτε όλες τις διαθέσιμες ψηφοφορίες
+                  </p>
+                </Link>
+              </CardContent>
+              <CardFooter>
+                <Link href="/elections" className="w-full">
+                  <Button variant="outline" className="w-full transition-transform duration-300 hover:translate-y-[-2px] hover:shadow-lg">
+                    Περιηγηθείτε στις Ψηφοφορίες
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Button>
+                </Link>
+              </CardFooter>
+            </Card>
+
+            <Card className="transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl">
+              <CardHeader>
+                <CardTitle>Ιστορικό Ψηφοφοριών</CardTitle>
+                <CardDescription>
+                  Παρακολουθήστε τις προηγούμενες ψήφους σας
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="h-36 flex items-center justify-center">
+                <Link href="/my-votes" className="text-center">
+                  <CheckCircle className="h-12 w-12 text-green-600 mb-4 mx-auto" />
+                  <p className="text-sm text-muted-foreground">
+                    Δείτε το πλήρες ιστορικό ψηφοφοριών σας
+                  </p>
+                </Link>
+              </CardContent>
+              <CardFooter>
+                <Link href="/my-votes" className="w-full">
+                  <Button variant="outline" className="w-full transition-transform duration-300 hover:translate-y-[-2px] hover:shadow-lg">
+                    Δείτε το Ιστορικό
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Button>
+                </Link>
+              </CardFooter>
+            </Card>
+          </div>
+
+          {isAdmin && (
+            <div className="mt-8">
+              <h2 className="text-2xl font-bold mb-4">Εργαλεία Διαχείρισης</h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                <Card className="transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl">
+                  <CardHeader>
+                    <CardTitle>Διαχείριση Ψηφοφοριών</CardTitle>
+                    <CardDescription>
+                      Δημιουργήστε και διαμορφώστε ψηφοφορίες
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="h-36 flex items-center justify-center">
+                    <Link href="/admin/elections" className="text-center">
+                      <Vote className="h-12 w-12 text-purple-600 mb-4 mx-auto" />
+                      <p className="text-sm text-muted-foreground">
+                        Διαχείριση όλων των ψηφοφοριών
+                      </p>
+                    </Link>
+                  </CardContent>
+                  <CardFooter>
+                    <Link href="/admin/elections" className="w-full">
+                      <Button className="w-full transition-transform duration-300 hover:translate-y-[-2px] hover:shadow-lg">
+                        Διαχείριση Ψηφοφοριών
+                      </Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+
+                <Card className="transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl">
+                  <CardHeader>
+                    <CardTitle>Πίνακας Ελέγχου Analytics</CardTitle>
+                    <CardDescription>
+                      Στατιστικά και οπτικοποιήσεις
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="h-36 flex items-center justify-center">
+                    <Link href="/admin/dashboard" className="text-center">
+                      <LineChart className="h-12 w-12 text-blue-600 mb-4 mx-auto" />
+                      <p className="text-sm text-muted-foreground">
+                        Πρόσβαση σε analytics εργαλείο
+                      </p>
+                    </Link>
+                  </CardContent>
+                  <CardFooter>
+                    <Link href="/admin/dashboard" className="w-full">
+                      <Button className="w-full transition-transform duration-300 hover:translate-y-[-2px] hover:shadow-lg">
+                        Δείτε τον Πίνακα Ελέγχου
+                      </Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
