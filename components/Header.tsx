@@ -3,10 +3,13 @@ import { ClerkLoaded, SignInButton, SignUpButton, UserButton, useUser } from '@c
 import Link from 'next/link';
 import React from 'react';
 import Form from 'next/form';
-import { Scroll, ScrollText } from 'lucide-react';
+import { ClipboardPlus } from 'lucide-react';
 
 function Header() {
   const { user } = useUser();
+
+  // Έλεγχος αν ο χρήστης είναι admin
+  const isAdmin = user?.publicMetadata?.role === 'voting_admin';
 
   return (
     <header className='flex flex-wrap justify-between items-center px-4 py-2'>
@@ -37,17 +40,20 @@ function Header() {
         {/* Buttons */}
         <div className='flex items-center space-x-4 mt-4 sm:mt-0 flex-1 sm:flex-none'>
           <ClerkLoaded>
-            {user && (
+
+            {/* Διαχείριση Ψηφοφοριών - μόνο για admin */}
+            {user && isAdmin && (
               <Link
-                href="/votes"
+                href="/admin"
                 className='flex-1 relative flex justify-center
                            sm:justify-start sm:flex-none items-center space-x-2 
                            bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
-                <ScrollText className='w-6 h-6' />
-                <span>Οι ψηφοφορίες μου</span>
+                <ClipboardPlus className='w-6 h-6' />
+                <span>Διαχείριση Ψηφοφοριών</span>
               </Link>
             )}
 
+            {/* User info ή login/signup */}
             {user ? (
               <div className='flex items-center space-x-2'>
                 <UserButton />
